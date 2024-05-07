@@ -160,6 +160,7 @@ const updateBrandById = async (brandId, req) => {
   //  console.log(req.files)
   
  
+ 
   if (req.files.logo) {
     logo = uploadSingleFile(req.files.logo);
     brand.logo =  logo
@@ -196,8 +197,31 @@ const updateBrandById = async (brandId, req) => {
     const updatedImagesArray = await addImagesToArray(brandId,images)
     // console.log(updatedImagesArray)
   }
+// console.log( "Hello" ,req.files['slide_show[]'])
 
 
+
+if(!brand.slide_show){
+  brand.slide_show=[]
+}else{
+  brand.slide_show=req.body.slide_show
+} 
+  if (req.files['slide_show[]']) {
+   
+
+    var slide_showImage = uploadSingleFile(req.files['slide_show[]']);
+    
+    // Check if slide_show array exists in updateBody
+    if (!brand.slide_show || !Array.isArray(brand.slide_show)) {
+        brand.slide_show = []; // Initialize slide_show as an array if it doesn't exist
+    }
+
+    // Add the new slide_showImage to the slide_show array
+    brand.slide_show.push(slide_showImage);
+}
+
+   
+    
   
 
   const slug = generateSlug(req.body.name);
