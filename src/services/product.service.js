@@ -10,12 +10,11 @@ const createProduct = async (productBody) => {
   try {
     const slug = generateSlug(productBody.name);
 
-    const cats = productBody.category?.map(cat => {
-      return cat.value
-    })
-    // console.log(productBody)
-    let add_descriptions = []
-    let add_properties = []
+    // const cats = productBody.category?.map(cat => {
+    //   return cat.value
+    // })
+    const cats = productBody.category;
+    console.log(cats)
     const product = new Product({
       brand_id: productBody.brand_id,
       sku: productBody.sku,
@@ -39,27 +38,27 @@ const createProduct = async (productBody) => {
       allow_out_of_stock_purchase: productBody.allow_out_of_stock_purchase,
       price: productBody.price,
       discounted_price: productBody.discounted_price,
-      price_includes_tax: productBody.price_includes_tax,
+      // price_includes_tax: productBody.price_includes_tax,
       cost: productBody.cost,
       published: productBody.published,
       categories: cats
       // sales_count to be calculated
   
     })
-    if(typeof productBody.additional_descriptions !== 'undefined' && productBody.additional_descriptions.length > 0) {
-      productBody.additional_descriptions.map((doc,index) => {
-          add_descriptions.push({label:doc.label,value: doc.value })
-      })
-  }
+  //   if(typeof productBody.additional_descriptions !== 'undefined' && productBody.additional_descriptions.length > 0) {
+  //     productBody.additional_descriptions.map((doc,index) => {
+  //         add_discriptions.push({label:doc.label,value: doc.value })
+  //     })
+  // }
 
-  if(typeof productBody.additional_properties !== 'undefined' && productBody.additional_properties.length > 0) {
-      productBody.additional_properties.map((doc,index) => {
-          add_properties.push({label:doc.label,value: doc.value })
-      })
-  }
-  product.additional_descriptions = add_descriptions;
-  product.additional_properties = add_properties;
-     product.save();
+  // if(typeof productBody.additional_properties !== 'undefined' && productBody.additional_properties.length > 0) {
+  //     productBody.additional_properties.map((doc,index) => {
+  //         add_properties.push({label:doc.label,value: doc.value })
+  //     })
+  // }
+  // product.additional_descriptions = add_discriptions;
+  // product.additional_properties = add_properties;
+    product.save();
     
     return product
 
@@ -148,13 +147,13 @@ const queryProducts = async (filter, options) => {
                 add_properties.push({label:doc.label,value: doc.value })
             })
             product.additional_properties = add_properties;
-            // console.log(product.additional_properties)
+            console.log(product.additional_properties)
     
         }
        
       
       
-      //  console.log(product)
+      // console.log(product)
       await product.save();
       
        return product

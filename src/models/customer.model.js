@@ -15,16 +15,10 @@ const customerSchema = mongoose.Schema(
         required: true,
         trim: true,
     },
-    mobile: {
-      type: Number,
-      required: false,
-      trim: true,
-      index: true,
-  },
     email: {
         type: String,
-        required: false,
-        index: true,
+        required: true,
+        unique: true,
         trim: true,
         lowercase: true,
         validate(value) {
@@ -33,7 +27,18 @@ const customerSchema = mongoose.Schema(
           }
         },
       },
-    
+      password: {
+        type: String,
+        // required: true,
+        trim: true,
+        // minlength: 8,
+        // validate(value) {
+        //   if (!value.match(/\d/) || !value.match(/[a-zA-Z]/)) {
+        //     throw new Error('Password must contain at least one letter and one number');
+        //   }
+        // },
+        private: true, // used by the toJSON plugin
+      },
       dob: {
         type: String,
         trim: true,
@@ -50,20 +55,6 @@ const customerSchema = mongoose.Schema(
     timestamps: true,
   }
 );
-
-// Custom validation for uniqueness of phone number
-customerSchema.path('mobile').validate(async function(value) {
-  if (value === null) return true; // Allow null values
-  const existingCustomer = await this.constructor.findOne({ mobile: value });
-  return !existingCustomer || existingCustomer._id.equals(this._id);
-}, 'Mobile number must be unique.');
-
-// Custom validation for uniqueness of email
-customerSchema.path('email').validate(async function(value) {
-  if (value === null) return true; // Allow null values
-  const existingCustomer = await this.constructor.findOne({ email: value });
-  return !existingCustomer || existingCustomer._id.equals(this._id);
-}, 'Email must be unique.');
 
 // add plugin that converts mongoose to json
 customerSchema.plugin(toJSON);

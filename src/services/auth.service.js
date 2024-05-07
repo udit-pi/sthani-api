@@ -4,7 +4,6 @@ const userService = require('./user.service');
 const Token = require('../models/token.model');
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
-const { customerService } = require('./store');
 
 /**
  * Login with username and password
@@ -18,14 +17,6 @@ const loginUserWithEmailAndPassword = async (email, password) => {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
   }
   return user;
-};
-
-const loginUserWithEmailOrPhone = async (email,phone) => {
-  const customer = await customerService.getUserByEmailOrPhone(email,phone);
-  if (!customer) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or phone');
-  }
-  return customer;
 };
 
 /**
@@ -105,5 +96,4 @@ module.exports = {
   refreshAuth,
   resetPassword,
   verifyEmail,
-  loginUserWithEmailOrPhone
 };

@@ -11,7 +11,9 @@ router
 
 router
   .route('/')
-  .post(auth('manageProducts'), validate(productValidation.createProduct), productController.createProduct)
+  // .post(auth('manageProducts'), validate(productValidation.createProduct), productController.createProduct)
+  .post( productController.createProduct)
+
  
 router
   .route('/:productId')

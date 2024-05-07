@@ -41,7 +41,7 @@ const propertySchema = mongoose.Schema(
 );
 
 // add plugin that converts mongoose to json
-propertySchema.plugin(toJSON);
-propertySchema.plugin(paginate);
+ propertySchema.plugin(toJSON);
+ propertySchema.plugin(paginate);
 
 module.exports = mongoose.model('Property', propertySchema);

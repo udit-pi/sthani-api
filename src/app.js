@@ -11,7 +11,6 @@ const morgan = require('./config/morgan');
 const { jwtStrategy } = require('./config/passport');
 const { authLimiter } = require('./middlewares/rateLimiter');
 const multer = require('multer');
-const cookieParser = require('cookie-parser');
 const path = require('path');
 const adminRoutes = require('./routes/admin');
 const routes = require('./routes/v1');
@@ -60,19 +59,19 @@ app.options('*', cors());
 app.use(passport.initialize());
 passport.use('jwt', jwtStrategy);
 
-app.use(cookieParser());
-
 // limit repeated failed requests to auth endpoints
 if (config.env === 'production') {
-  app.use('/api/v1/auth', authLimiter);
+  app.use('/v1/auth', authLimiter);
 }
 
-
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
 
 // v1 api routes
-app.use('/api/v1', routes);
-app.use('/api/admin', adminRoutes);
-app.use('/api/store', storeRoutes);
+app.use('/v1', routes);
+app.use('/admin', adminRoutes);
+app.use('/store', storeRoutes);
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {

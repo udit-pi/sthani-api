@@ -12,6 +12,8 @@ const router = express.Router();
 router
   .route('/')
   .post(auth('manageBrands'),  brandController.createBrand)
+  // .post( brandController.createBrand)
+
   .get(auth('getBrands'), validate(brandValidation.getBrands), brandController.getBrands);
 
 router

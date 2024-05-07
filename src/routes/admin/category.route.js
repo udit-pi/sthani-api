@@ -8,6 +8,8 @@ const router = express.Router();
 router
   .route('/')
   .post(auth('manageCategories'), validate(categoryValidation.createCategory), categoryController.createCategory)
+  // .post(  categoryController.createCategory)
+
   .get(auth('getCategories'), validate(categoryValidation.getCategories), categoryController.getCategories);
 
 router
@@ -16,4 +18,7 @@ router
   .patch(auth('manageCategories'),categoryController.updateCategory)
   .delete(auth('manageCategories'), validate(categoryValidation.deleteCategory), categoryController.deleteCategory);
 
+
+
 module.exports = router;
+  

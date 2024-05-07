@@ -68,3 +68,15 @@ brandSchema.plugin(toJSON);
 brandSchema.plugin(paginate);
 
 module.exports = mongoose.model('Brand', brandSchema);
+
+
+
+
+
+
+
+
+
+//"EXDEV: cross-device link not permitted, rename 'C:\\Users\\sumit\\AppData\\Local\\Temp\\59425e1791d9b372444b6a800' -> 'D:\\sthani\\api\\src\\uploads\\1714467803652cat.jpeg'"
+
+

@@ -7,11 +7,16 @@ const formidable = require('formidable');
 
 const createBrand = catchAsync(async (req, res) => {
    
-//   console.log(req.body)
-//   console.log(req.files.logo[0].filepath)
+  // console.log(req.body)
+  // console.log(req.files.logo)
 try {
   const brand = await brandService.createBrand(req);
+  
   res.status(httpStatus.CREATED).send(brand);
+
+
+
+
 } catch (err) {
     res.status(400).json({ message: err.message });
 }
