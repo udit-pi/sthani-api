@@ -18,14 +18,18 @@ const brandSchema = mongoose.Schema(
     },
     description: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     logo: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
+    slide_show :[{
+      type: String, 
+      required: true
+    }],
     images: {
       type: [
         {

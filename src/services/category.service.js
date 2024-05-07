@@ -59,16 +59,17 @@ const getCategoryById = async (id) => {
 
 
 const updateCategoryById = async (req,categoryId, updateBody) => {
-   console.log(updateBody)
-  console.log(categoryId)
+   console.log( "Updated", updateBody)
+  console.log( "categryId",categoryId)
   console.log(req.files)
+ 
   const category = await getCategoryById(categoryId);
   if (!category) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Category not found');
   }
 
 
-  if( Object.keys(req.files).length !== 0 && typeof req.files === 'object') {
+  if(req.files.banner&& Object.keys(req.files.banner).length !== 0 && typeof req.files.banner === 'object') {
     console.log(req.files);
     const banner = uploadSingleFile(req.files.banner)
     category.banner =  banner;
@@ -76,8 +77,41 @@ const updateCategoryById = async (req,categoryId, updateBody) => {
     updateBody.banner = category.banner
   }
 
-  Object.assign(category, updateBody);
+  if(req.files.icon&& Object.keys(req.files.icon).length !== 0 && typeof req.files.icon === 'object') {
+    console.log(req.files);
+    const icon = uploadSingleFile(req.files.icon)
+    category.icon =  icon;
+  } else {
+    updateBody.icon = category.icon
+  }
+
  
+
+  if (req.files['slide_show[]']) {
+   
+
+    var slide_showImage = uploadSingleFile(req.files['slide_show[]']);
+    
+    // Check if slide_show array exists in updateBody
+    if (!updateBody.slide_show || !Array.isArray(updateBody.slide_show)) {
+        updateBody.slide_show = []; // Initialize slide_show as an array if it doesn't exist
+    }
+
+    // Add the new slide_showImage to the slide_show array
+    updateBody.slide_show.push(slide_showImage);
+}
+
+if(!updateBody.slide_show){
+  category.slide_show=[]
+}    
+    
+    
+    
+    
+    Object.assign(category, updateBody);
+    
+    console.log(category)
+   
  
  
   

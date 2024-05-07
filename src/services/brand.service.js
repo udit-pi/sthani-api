@@ -13,14 +13,27 @@ const formidable = require('formidable');
  * @returns {Promise<User>}
  */
 const createBrand = async (req) => {
-  //  console.log(req.files.logo)
+   console.log(req.files.logo)
   //  console.log(req.body)
   // const labelCount = req.files['images[]'].length
   // console.log(req.body.labels);
-  const logo = uploadSingleFile(req.files.logo);
-  const images = uploadMultipleFile(req.files['images[]'], req.body.labels);
 
-  // console.log(images)
+if(req.files.logo){
+
+  var logo = uploadSingleFile(req.files.logo);
+}
+if(req.files['images[]']){
+
+  var images = uploadMultipleFile(req.files['images[]'], req.body.labels);
+}
+
+if(req.files['slide_show[]']){
+  var slide_show = uploadMultipleFile(req.files['slide_show[]'])
+}
+if(slide_show){
+
+  var slideShowValues = slide_show.map(item => item.value);
+}
 
   const slug = generateSlug(req.body.name);
 
@@ -28,8 +41,9 @@ const createBrand = async (req) => {
     name: req.body.name,
     description: req.body.description,
     website: req.body.website,
-    logo: logo,
-    images: images,
+    slide_show:slideShowValues,
+    logo: logo&&logo,
+    images:images&& images,
     slug: slug,
   });
   const newBrand = brand.save();
@@ -234,7 +248,7 @@ const updateBrandById = async (brandId, req) => {
 
 const deleteBrandById = async (brandId) => {
   const brand = await getBrandById(brandId);
-  // console.log(brand)
+  // console.log( "Hello brand",brand)
 
   if (!brand) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Brand not found');
