@@ -18,7 +18,7 @@ const storeRoutes = require('./routes/store')
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
 const formDataMiddleware = require('./middlewares/formDataMiddleware');
-
+const uploadFolder = process.env.UPLOAD_FOLDER || '/var/www/html/media';
 var upload = multer();
 
 
@@ -42,7 +42,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // app.use(upload.any()); 
 app.use(formDataMiddleware);
-app.use('/uploads',express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(uploadFolder));
 
 // sanitize request data
 app.use(xss());
@@ -61,7 +61,7 @@ passport.use('jwt', jwtStrategy);
 
 // limit repeated failed requests to auth endpoints
 if (config.env === 'production') {
-  app.use('/v1/auth', authLimiter);
+  app.use('/api/v1/auth', authLimiter);
 }
 
 app.get('/', (req, res) => {
@@ -69,9 +69,9 @@ app.get('/', (req, res) => {
 })
 
 // v1 api routes
-app.use('/v1', routes);
-app.use('/admin', adminRoutes);
-app.use('/store', storeRoutes);
+app.use('/api/v1', routes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/store', storeRoutes);
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {

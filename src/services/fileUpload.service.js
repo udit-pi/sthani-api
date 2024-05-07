@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
-
+const uploadFolder = process.env.UPLOAD_FOLDER || '/var/www/html/media';
 
 // const uploadSingleFile = (file) => {
 
@@ -16,7 +16,7 @@ const multer = require('multer');
 
 const uploadSingleFile = (file) => {
     const fileName = Date.now() + file.originalFilename;
-    const file_path = path.join(__dirname, '../uploads', fileName);
+    const file_path = path.join(uploadFolder, fileName);
     
     // Copy the file to the desired location
     fs.copyFileSync(file.filepath, file_path);
@@ -35,7 +35,7 @@ const uploadMultipleFile = (files) =>  {
         const images = []
         files.map((file,index) => {
             const fileName = Date.now() + file.originalFilename;
-            const file_path = path.join(__dirname, '../uploads', fileName);
+            const file_path = path.join(uploadFolder, fileName);
             fs.copyFileSync(file.filepath, file_path); // Move file to desired location
             fs.unlinkSync(file.filepath);
             images.push({value:fileName })
@@ -85,7 +85,7 @@ const uploadMultipleMediaFiles = (files) => {
             files.forEach(file => {
                 console.log('Array File:', file.originalFilename);
                 const fileName = Date.now() + file.originalFilename;
-                const file_path = path.join(__dirname, '../uploads', fileName);
+                const file_path = path.join(uploadFolder, fileName);
                 fs.renameSync(file.filepath, file_path); // Move file to desired location
                
                 uploadedFiles.push(fileName)
@@ -94,7 +94,7 @@ const uploadMultipleMediaFiles = (files) => {
             // Single file uploaded
             console.log('File:', files.originalFilename);
             const fileName = Date.now() + files.originalFilename;
-            const file_path = path.join(__dirname, '../uploads', fileName);
+            const file_path = path.join(uploadFolder, fileName);
             fs.renameSync(files.filepath, file_path); // Move file to desired location
                
             uploadedFiles.push(fileName)
